@@ -1,2 +1,10 @@
-/.idea/libraries/Flutter_Plugins.xml
-/.idea/todo-flutter.iml
+/.dart_tool/
+/.dart_tool/flutter_build/d7e47f45d70ed7013e49955ffe683463/App.framework/App
+/build/ios/
+/.idea/
+/build/last_build_run.json
+/build/f500e4c5d3dafbf1f3e9dcf125c30825/gen_dart_plugin_registrant.stamp
+/.flutter-plugins
+/.flutter-plugins-dependencies
+/build/f500e4c5d3dafbf1f3e9dcf125c30825/_composite.stamp
+/build/f500e4c5d3dafbf1f3e9dcf125c30825/gen_localizations.stamp
