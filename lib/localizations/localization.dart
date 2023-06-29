@@ -214,7 +214,7 @@ class ProviderLocalizations {
         context, ProviderLocalizations);
   }
 
-  String get appTitle => 'Provider Example';
+  String get appTitle => 'Todo: Manage your daily tasks';
 }
 
 class ProviderLocalizationsDelegate

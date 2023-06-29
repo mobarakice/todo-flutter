@@ -47,7 +47,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                 decoration: InputDecoration(
                   hintText: localizations.newTodoHint,
                 ),
-                style: textTheme.headlineMedium,
+                style: textTheme.titleMedium,
                 autofocus: true,
                 validator: (val) {
                   return val!.trim().isEmpty
@@ -59,26 +59,31 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                 key: TodoKeys.noteField,
                 controller: _notesEditingController,
                 style: textTheme.titleSmall,
-                decoration: InputDecoration(hintText: localizations.descriptionHint),
-                maxLines: 10,
-              )
+                decoration:
+                    InputDecoration(hintText: localizations.descriptionHint),
+                maxLines: 15,
+              ),
+              const SizedBox(height: 8),
+              SizedBox(
+                  width: double.infinity,
+                  height: 56,
+                  child: ElevatedButton(
+                      key: TodoKeys.saveNewTodo,
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          Provider.of<TodoListModel>(context, listen: false)
+                              .addTodo(Task(
+                            _titleEditingController.text,
+                            description: _notesEditingController.text,
+                          ));
+                          Navigator.pop(context);
+                        }
+                      },
+                      child: Text(localizations.addTask,
+                          style: textTheme.titleLarge)))
             ],
           ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        key: TodoKeys.saveNewTodo,
-        tooltip: localizations.addTask,
-        onPressed: () {
-          if (_formKey.currentState!.validate()) {
-            Provider.of<TodoListModel>(context, listen: false).addTodo(Task(
-              _titleEditingController.text,
-              description: _notesEditingController.text,
-            ));
-            Navigator.pop(context);
-          }
-        },
-        child: const Icon(Icons.add),
       ),
     );
   }
