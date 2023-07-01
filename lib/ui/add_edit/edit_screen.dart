@@ -7,7 +7,7 @@ import '../../utils/keys.dart';
 
 class EditTaskScreen extends StatefulWidget {
   final void Function(String task, String note) onEdit;
-  final String id;
+  final int id;
 
   const EditTaskScreen({
     required this.id,

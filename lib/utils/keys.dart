@@ -6,19 +6,19 @@ class TodoKeys {
   static const addTodoFab = Key('__addTodoFab__');
   static const snackBar = Key('__snackBar__');
 
-  static Key snackBarAction(String id) => Key('__snackBar_action_${id}__');
+  static Key snackBarAction(int id) => Key('__snackBar_action_${id}__');
 
   // Todos
   static const todoList = Key('__todoList__');
   static const todosLoading = Key('__todosLoading__');
 
-  static Key todoItem(String id) => Key('TodoItem__$id');
+  static Key todoItem(int id) => Key('TodoItem__$id');
 
-  static Key todoItemCheckbox(String id) => Key('TodoItem__${id}__Checkbox');
+  static Key todoItemCheckbox(int id) => Key('TodoItem__${id}__Checkbox');
 
-  static Key todoItemTask(String id) => Key('TodoItem__${id}__Task');
+  static Key todoItemTask(int id) => Key('TodoItem__${id}__Task');
 
-  static Key todoItemNote(String id) => Key('TodoItem__${id}__Note');
+  static Key todoItemNote(int id) => Key('TodoItem__${id}__Note');
 
   // Tabs
   static const tabs = Key('__tabs__');

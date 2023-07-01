@@ -17,37 +17,37 @@ class RemoteRepositoryImpl implements Repository {
 
   /// Mock that "fetches" some tasks from a "web service" after a short delay
   @override
-  Future<List<TaskEntity>> getTasks() async {
+  Future<List<Task>> getTasks() async {
     return Future.delayed(
         delay,
         () => [
-              TaskEntity(
+              Task(
+                null,
                 'Buy food for da kitty',
-                '1',
                 'With the chickeny bits!',
                 false,
               ),
-              TaskEntity(
+              Task(
+                null,
                 'Find a Red Sea dive trip',
-                '2',
                 'Echo vs MY Dream',
                 false,
               ),
-              TaskEntity(
+              Task(
+                null,
                 'Book flights to Egypt',
-                '3',
                 '',
                 true,
               ),
-              TaskEntity(
+              Task(
+                null,
                 'Decide on accommodation',
-                '4',
                 '',
                 false,
               ),
-              TaskEntity(
+              Task(
+                null,
                 'Sip Margaritas',
-                '5',
                 'on the beach',
                 true,
               ),
@@ -57,7 +57,17 @@ class RemoteRepositoryImpl implements Repository {
   /// Mock that returns true or false for success or failure. In this case,
   /// it will "Always Succeed"
   @override
-  Future<bool> saveTasks(List<TaskEntity> todos) async {
+  Future<bool> saveTasks(List<Task> todos) async {
     return Future.value(true);
+  }
+
+  @override
+  Future saveTask(Task task) {
+    return saveTasks([task]);
+  }
+
+  @override
+  Future updateTask(Task task) {
+    return saveTask(task);
   }
 }

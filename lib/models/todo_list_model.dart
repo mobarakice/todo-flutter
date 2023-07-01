@@ -3,7 +3,7 @@ import 'dart:collection';
 
 import 'package:flutter/widgets.dart';
 
-import '../data/models.dart';
+import '../data/db/task_entity.dart';
 import '../data/repository.dart';
 
 enum VisibilityFilter { all, active, completed }
@@ -43,7 +43,7 @@ class TodoListModel extends ChangeNotifier {
     notifyListeners();
 
     return repository.getTasks().then((loadedTodos) {
-      _todos.addAll(loadedTodos.map(Task.fromEntity));
+      _todos.addAll(loadedTodos);
       _isLoading = false;
       notifyListeners();
     }).catchError((err) {
@@ -74,7 +74,9 @@ class TodoListModel extends ChangeNotifier {
 
   void toggleAll() {
     var allComplete = todos.every((todo) => todo.complete);
-    _todos = _todos.map((todo) => todo.copy(complete: !allComplete)).toList();
+    _todos = _todos
+        .map<Task>((todo) => todo.copy(todo, complete: !allComplete))
+        .toList();
     notifyListeners();
     _uploadItems();
   }
@@ -101,10 +103,10 @@ class TodoListModel extends ChangeNotifier {
   }
 
   void _uploadItems() {
-    repository.saveTasks(_todos.map((it) => it.toEntity()).toList());
+    repository.saveTasks(_todos);
   }
 
-  Task todoById(String id) {
+  Task todoById(int id) {
     return _todos.firstWhere((it) => it.id == id);
   }
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart' hide Action;
 import 'package:provider/provider.dart';
 
-import '../../data/models.dart';
+import '../../data/db/task_entity.dart';
 import '../../localizations/localization.dart';
 import '../../models/todo_list_model.dart';
 import '../../utils/keys.dart';
@@ -115,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
           overflow: TextOverflow.ellipsis,
         ),
         action: SnackBarAction(
-          key: TodoKeys.snackBarAction(todo.id),
+          key: TodoKeys.snackBarAction(todo.id??-1),
           label: TodoLocalizations.of(context)!.undo,
           onPressed: () =>
               Provider.of<TodoListModel>(context, listen: false).addTodo(todo),

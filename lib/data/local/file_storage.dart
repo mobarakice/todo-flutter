@@ -21,19 +21,19 @@ class FileStorage implements Repository {
   );
 
   @override
-  Future<List<TaskEntity>> getTasks() async {
+  Future<List<Task>> getTasks() async {
     final file = await _getLocalFile();
     final string = await file.readAsString();
     final json = const JsonDecoder().convert(string);
     final tasks = (json['tasks'])
-        .map<TaskEntity>((task) => TaskEntity.fromJson(task))
+        .map<Task>((task) => Task.fromJson(task))
         .toList();
 
     return tasks;
   }
 
   @override
-  Future<File> saveTasks(List<TaskEntity> tasks) async {
+  Future<File> saveTasks(List<Task> tasks) async {
     final file = await _getLocalFile();
 
     return file.writeAsString(const JsonEncoder().convert({
@@ -51,5 +51,15 @@ class FileStorage implements Repository {
     final file = await _getLocalFile();
 
     return file.delete();
+  }
+
+  @override
+  Future saveTask(Task task) {
+    return saveTasks([task]);
+  }
+
+  @override
+  Future updateTask(Task task) {
+    return saveTask(task);
   }
 }

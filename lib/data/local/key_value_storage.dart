@@ -19,22 +19,32 @@ class KeyValueStorage implements Repository {
   const KeyValueStorage(this.key, this.store, [this.codec = json]);
 
   @override
-  Future<List<TaskEntity>> getTasks() async {
+  Future<List<Task>> getTasks() async {
     return codec
         .decode(store.getString(key))['tasks']
         .cast<Map<String, Object>>()
-        .map<TaskEntity>(TaskEntity.fromJson)
+        .map<Task>(Task.fromJson)
         .toList(growable: false);
   }
 
   @override
-  Future<bool> saveTasks(List<TaskEntity> tasks) {
+  Future<bool> saveTasks(List<Task> tasks) {
     return store.setString(
       key,
       codec.encode({
         'tasks': tasks.map((todo) => todo.toJson()).toList(),
       }),
     );
+  }
+
+  @override
+  Future saveTask(Task task) {
+    return saveTasks([task]);
+  }
+
+  @override
+  Future updateTask(Task task) {
+    return saveTask(task);
   }
 }
 

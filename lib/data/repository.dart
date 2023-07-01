@@ -3,7 +3,11 @@ import 'dart:core';
 import 'package:todo/data/db/task_entity.dart';
 
 abstract class Repository {
-  Future<List<TaskEntity>> getTasks();
+  Future<List<Task>> getTasks();
 
-  Future saveTasks(List<TaskEntity> tasks);
+  Future saveTasks(List<Task> tasks);
+
+  Future saveTask(Task task);
+
+  Future updateTask(Task task);
 }

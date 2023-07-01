@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:todo/models/todo_list_model.dart';
 import 'package:todo/utils/keys.dart';
 
-import '../../data/models.dart';
+import '../../data/db/task_entity.dart';
 import '../../localizations/localization.dart';
 
 class AddTaskScreen extends StatefulWidget {
@@ -31,6 +31,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text(localizations!.addTask),
       ),
@@ -73,8 +74,10 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                         if (_formKey.currentState!.validate()) {
                           Provider.of<TodoListModel>(context, listen: false)
                               .addTodo(Task(
+                            null,
                             _titleEditingController.text,
-                            description: _notesEditingController.text,
+                            _notesEditingController.text,
+                            false
                           ));
                           Navigator.pop(context);
                         }

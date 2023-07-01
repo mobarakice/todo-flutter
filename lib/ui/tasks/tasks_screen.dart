@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../data/models.dart';
+import '../../data/db/task_entity.dart';
 import '../../models/todo_list_model.dart';
 import '../../utils/keys.dart';
 import '../details/details_screen.dart';
@@ -23,7 +23,7 @@ class TodoListView extends StatelessWidget {
         final todo = tasks.elementAt(index);
 
         return Dismissible(
-          key: TodoKeys.todoItem(todo.id),
+          key: TodoKeys.todoItem(todo.id??-1),
           onDismissed: (_) => onRemove(context, todo),
           child: ListTile(
             onTap: () {
@@ -32,7 +32,7 @@ class TodoListView extends StatelessWidget {
                 MaterialPageRoute(
                   builder: (_) {
                     return DetailsScreen(
-                      id: todo.id,
+                      id: todo.id??-1,
                       onRemove: () {
                         Navigator.pop(context);
                         onRemove(context, todo);
@@ -43,21 +43,21 @@ class TodoListView extends StatelessWidget {
               );
             },
             leading: Checkbox(
-              key: TodoKeys.todoItemCheckbox(todo.id),
+              key: TodoKeys.todoItemCheckbox(todo.id??-1),
               value: todo.complete,
               onChanged: (complete) {
                 Provider.of<TodoListModel>(context, listen: false)
-                    .updateTodo(todo.copy(complete: complete));
+                    .updateTodo(todo.copy(todo, complete: complete));
               },
             ),
             title: Text(
               todo.title,
-              key: TodoKeys.todoItemTask(todo.id),
+              key: TodoKeys.todoItemTask(todo.id??-1),
               style: Theme.of(context).textTheme.titleMedium,
             ),
             subtitle: Text(
               todo.description,
-              key: TodoKeys.todoItemNote(todo.id),
+              key: TodoKeys.todoItemNote(todo.id??-1),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: Theme.of(context).textTheme.titleSmall,
