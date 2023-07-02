@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -28,10 +29,6 @@ Future<void> main() async {
               "ttt",
               KeyValueStore(await SharedPreferences.getInstance()),
               const JsonCodec()))));
-
-  // runApp(const ProviderApp(
-  //     repository:
-  //     FileStorage("fileStorage", getApplicationDocumentsDirectory)));
 }
 
 class TodoApp extends StatelessWidget {
@@ -45,6 +42,15 @@ class TodoApp extends StatelessWidget {
       create: (_) => TodoListModel(repository: repository)..loadTodos(),
       child: MaterialApp(
         theme: TodoTheme.theme,
+        builder: (context, child) {
+          return CupertinoTheme(
+            // Instead of letting Cupertino widgets auto-adapt to the Material
+            // theme (which is green), this app will use a different theme
+            // for Cupertino (which is blue by default).
+            data: const CupertinoThemeData(),
+            child: Material(child: child),
+          );
+        },
         localizationsDelegates: [
           TodoLocalizationsDelegate(),
           ProviderLocalizationsDelegate(),

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:provider/provider.dart';
 
@@ -6,6 +7,7 @@ import '../../localizations/localization.dart';
 import '../../models/todo_list_model.dart';
 import '../../utils/keys.dart';
 import '../../utils/routes.dart';
+import '../../utils/widgets.dart';
 import '../stats/stats_screen.dart';
 import '../tasks/tasks_screen.dart';
 import 'extra_actions_button.dart';
@@ -29,8 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildAndroidHomePage(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(ProviderLocalizations.of(context)?.appTitle as String),
@@ -85,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
         valueListenable: _tab,
         builder: (context, tab, _) {
           return BottomNavigationBar(
-            //key: key: TodoKeys.tabs,
+            key: TodoKeys.tabs,
             currentIndex: _HomeScreenTab.values.indexOf(tab),
             onTap: (int index) => _tab.value = _HomeScreenTab.values[index],
             items: const [
@@ -104,6 +105,58 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  // On iOS, the app uses a bottom tab paradigm. Here, each tab view sits inside
+  // a tab in the tab scaffold. The tab scaffold also positions the tab bar
+  // in a row at the bottom.
+  //
+  // An important thing to note is that while a Material Drawer can display a
+  // large number of items, a tab bar cannot. To illustrate one way of adjusting
+  // for this, the app folds its fourth tab (the settings page) into the
+  // third tab. This is a common pattern on iOS.
+  Widget _buildIosHomePage(BuildContext context) {
+    return CupertinoTabScaffold(
+      resizeToAvoidBottomInset: false,
+      tabBar: CupertinoTabBar(
+        currentIndex: _HomeScreenTab.values.indexOf(_tab.value),
+        onTap: (int index) => _tab.value = _HomeScreenTab.values[index],
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.list),
+            label: "Tasks",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.show_chart),
+            label: "Stats",
+          )
+        ],
+      ),
+      tabBuilder: (context, index) {
+        assert(index <= 2 && index >= 0, 'Unexpected tab index: $index');
+        return switch (index) {
+          0 => CupertinoTabView(
+              defaultTitle: "Task",
+              builder: (context) => TodoListView(onRemove: (context, todo) {
+                Provider.of<TodoListModel>(context, listen: false)
+                    .removeTodo(todo);
+                _showUndoSnackBar(context, todo);
+              }),
+            ),
+          1 => CupertinoTabView(
+              defaultTitle: "Stats", builder: (context) => const StatsView()),
+          _ => const SizedBox.shrink(),
+        };
+      },
+    );
+  }
+
+  @override
+  Widget build(context) {
+    return PlatformWidget(
+      androidBuilder: _buildAndroidHomePage,
+      iosBuilder: _buildIosHomePage,
+    );
+  }
+
   void _showUndoSnackBar(BuildContext context, Task todo) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -115,7 +168,7 @@ class _HomeScreenState extends State<HomeScreen> {
           overflow: TextOverflow.ellipsis,
         ),
         action: SnackBarAction(
-          key: TodoKeys.snackBarAction(todo.id??-1),
+          key: TodoKeys.snackBarAction(todo.id ?? -1),
           label: TodoLocalizations.of(context)!.undo,
           onPressed: () =>
               Provider.of<TodoListModel>(context, listen: false).addTodo(todo),

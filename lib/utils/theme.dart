@@ -72,3 +72,16 @@ class TodoTheme {
     );
   }
 }
+
+final appTheme = ThemeData(
+  colorSchemeSeed: Colors.cyan,
+  useMaterial3: true,
+  textTheme: const TextTheme(
+    displayLarge: TextStyle(
+      fontFamily: 'Corben',
+      fontWeight: FontWeight.w700,
+      fontSize: 24,
+      color: Colors.black,
+    ),
+  ),
+);
