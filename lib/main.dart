@@ -47,7 +47,8 @@ class TodoApp extends StatelessWidget {
             // Instead of letting Cupertino widgets auto-adapt to the Material
             // theme (which is green), this app will use a different theme
             // for Cupertino (which is blue by default).
-            data: const CupertinoThemeData(),
+            data: const CupertinoThemeData(primaryColor: Colors.cyan,
+                applyThemeToAll: true),
             child: Material(child: child),
           );
         },

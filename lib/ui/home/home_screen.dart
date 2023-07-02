@@ -46,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        //key: key: TodoKeys.addTodoFab,
+        key: TodoKeys.addTodoFab,
         onPressed: () => Navigator.pushNamed(context, TodoRoutes.addTodo),
         tooltip: TodoLocalizations.of(context)?.addTask,
         child: const Icon(Icons.add),
@@ -119,14 +119,14 @@ class _HomeScreenState extends State<HomeScreen> {
       tabBar: CupertinoTabBar(
         currentIndex: _HomeScreenTab.values.indexOf(_tab.value),
         onTap: (int index) => _tab.value = _HomeScreenTab.values[index],
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.list),
-            label: "Tasks",
+            icon: const Icon(Icons.list),
+            label:  TodoLocalizations.of(context)!.tasks,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.show_chart),
-            label: "Stats",
+            icon: const Icon(Icons.show_chart),
+            label: TodoLocalizations.of(context)!.stats,
           )
         ],
       ),
@@ -134,7 +134,7 @@ class _HomeScreenState extends State<HomeScreen> {
         assert(index <= 2 && index >= 0, 'Unexpected tab index: $index');
         return switch (index) {
           0 => CupertinoTabView(
-              defaultTitle: "Task",
+              defaultTitle: TodoLocalizations.of(context)!.tasks,
               builder: (context) => TodoListView(onRemove: (context, todo) {
                 Provider.of<TodoListModel>(context, listen: false)
                     .removeTodo(todo);
@@ -142,7 +142,7 @@ class _HomeScreenState extends State<HomeScreen> {
               }),
             ),
           1 => CupertinoTabView(
-              defaultTitle: "Stats", builder: (context) => const StatsView()),
+              defaultTitle: TodoLocalizations.of(context)!.stats, builder: (context) => const StatsView()),
           _ => const SizedBox.shrink(),
         };
       },
@@ -150,7 +150,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
-  Widget build(context) {
+  Widget build(BuildContext context) {
     return PlatformWidget(
       androidBuilder: _buildAndroidHomePage,
       iosBuilder: _buildIosHomePage,

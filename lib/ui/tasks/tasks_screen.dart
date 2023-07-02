@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo/ui/home/extra_actions_button.dart';
+import 'package:todo/ui/home/filter_button.dart';
 
 import '../../data/db/task_entity.dart';
 import '../../models/todo_list_model.dart';
@@ -19,43 +20,39 @@ class TodoListView extends StatelessWidget {
         .select<TodoListModel, List<Task>>((model) => model.filteredTodos);
     return CustomScrollView(
       slivers: [
-        CupertinoSliverNavigationBar(
-          trailing: CupertinoButton(
-            padding: EdgeInsets.zero,
-            onPressed: () {},
-            child: const Icon(CupertinoIcons.shuffle),
-          ),
-        ),
+        const CupertinoSliverNavigationBar(
+            trailing: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+              FilterButton(isActive: true),
+              ExtraActionsButton()
+            ])),
         SliverSafeArea(
           top: false,
           sliver: SliverPadding(
-            padding: const EdgeInsets.symmetric(vertical: 12),
+            padding: const EdgeInsets.symmetric(vertical: 0),
             sliver: SliverList(
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
                   final task = tasks.elementAt(index);
-                  // return const SafeArea(
-                  //     top: false,
-                  //     bottom: false,
-                  //     child: CupertinoListTile(title: Text("test"),)
-                  // );
                   return CupertinoListTile(
                       onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) {
-                          return DetailsScreen(
-                            id: task.id ?? -1,
-                            onRemove: () {
-                              Navigator.pop(context);
-                              onRemove(context, task);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) {
+                              return DetailsScreen(
+                                id: task.id ?? -1,
+                                onRemove: () {
+                                  Navigator.pop(context);
+                                  onRemove(context, task);
+                                },
+                              );
                             },
-                          );
-                        },
-                      ),
-                    );
-                  },
+                          ),
+                        );
+                      },
                       leading: CupertinoCheckbox(
                         key: TodoKeys.todoItemCheckbox(task.id ?? -1),
                         value: task.complete,

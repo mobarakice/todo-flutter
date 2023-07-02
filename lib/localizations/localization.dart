@@ -25,9 +25,9 @@ class TodoLocalizations {
         context, TodoLocalizations);
   }
 
-  String get todos => Intl.message(
-        'Todos',
-        name: 'todos',
+  String get tasks => Intl.message(
+        'Tasks',
+        name: 'Tasks',
         args: [],
         locale: locale.toString(),
       );
