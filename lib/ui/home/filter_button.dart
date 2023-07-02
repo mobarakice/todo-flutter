@@ -83,49 +83,35 @@ class FilterButton extends StatelessWidget {
     final model = Provider.of<TodoListModel>(context);
     return Container(
       alignment: Alignment.topRight,
-      child: Center(
-          child: CupertinoContextMenu.builder(
-            actions: [
-              CupertinoContextMenuAction(
-                onPressed: () {
-                  model.toggleAll();
-                  Navigator.pop(context);
-                },
-                isDefaultAction: true,
-                child: Text(TodoLocalizations.of(context)!.showAll),
-              ),
-              CupertinoContextMenuAction(
-                onPressed: () {
-                  model.clearCompleted();
-                  Navigator.pop(context);
-                },
-                child: Text(TodoLocalizations.of(context)!.showActive),
-              ),
-              CupertinoContextMenuAction(
-                onPressed: () {
-                  model.clearCompleted();
-                  Navigator.pop(context);
-                },
-                child: Text(TodoLocalizations.of(context)!.showCompleted),
-              )
-            ],
-            builder: (BuildContext context, Animation<double> animation) {
-              final Animation<Decoration> boxDecorationAnimation =
-                  _boxDecorationAnimation(animation);
-
-              return Container(
-                decoration: animation.value < CupertinoContextMenu.animationOpensAt
-                    ? boxDecorationAnimation.value
-                    : null,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: CupertinoColors.systemCyan,
-                    borderRadius: BorderRadius.circular(20.0),
-                  )
-                ),
-              );//return const Text("");
+      child: CupertinoContextMenu.builder(
+        actions: [
+          CupertinoContextMenuAction(
+            onPressed: () {
+              model.toggleAll();
+              Navigator.pop(context);
             },
-          )),
+            isDefaultAction: true,
+            child: Text(TodoLocalizations.of(context)!.showAll),
+          ),
+          CupertinoContextMenuAction(
+            onPressed: () {
+              model.clearCompleted();
+              Navigator.pop(context);
+            },
+            child: Text(TodoLocalizations.of(context)!.showActive),
+          ),
+          CupertinoContextMenuAction(
+            onPressed: () {
+              model.clearCompleted();
+              Navigator.pop(context);
+            },
+            child: Text(TodoLocalizations.of(context)!.showCompleted),
+          )
+        ],
+        builder: (BuildContext context, Animation<double> animation) {
+          return const Icon(Icons.filter_list);
+        },
+      ),
     );
   }
 
